@@ -1,5 +1,7 @@
 # EcoTrace — Context-Aware Carbon Footprint Intelligence
 
+[![CI](https://github.com/Ganesh-0509/Ecotrace/actions/workflows/ci.yml/badge.svg)](https://github.com/Ganesh-0509/Ecotrace/actions/workflows/ci.yml)
+
 > 🌿 An AI-powered platform that helps individuals understand, track, and reduce their carbon footprint through simple daily micro-actions and hyper-localized, personalized coaching from Google Gemini — running entirely on a **100% Google free-tier stack** with **no paid backend**.
 
 ---
@@ -23,7 +25,12 @@ It reasons over the user's **context** and makes **logical decisions** from it:
    **Gemini 2.5 Flash** for exactly 3 *hyper-localized* recommendations that build on what the
    user already does well and target their biggest remaining opportunity — referencing their
    city, transport, diet, and energy source (see `src/features/insights/`).
-4. Insights are **cached per month** in Firestore so the assistant stays useful while remaining
+4. **Graceful degradation.** If Gemini is unconfigured or fails (quota, network), the coach
+   transparently falls back to a **deterministic rule engine** (`rulesEngine.js`) that ranks
+   the user's own emission categories by remaining opportunity and coaches the biggest first.
+   Every result is tagged with its `source` (`gemini` | `rules`) so the user always gets
+   useful, quantified guidance.
+5. Insights are **cached per month** in Firestore so the assistant stays useful while remaining
    inside the free-tier quota.
 
 **Real-world usability:** zero-cost to run, works on any device (responsive SPA), graceful
@@ -213,11 +220,15 @@ deterministic **Vitest** unit tests (no React, no network, no Firebase):
 | `carbonCalculator.test.js` | Personalised savings, baseline scaling, rounding, eco-score saturation |
 | `dateUtils.test.js` | Month-key formatting + "is today" logic (deterministic via injected dates) |
 | `emissionFactors.test.js` | Catalogue integrity — no duplicate ids, well-formed actions, lookup index in sync |
+| `rulesEngine.test.js` | Context-aware fallback coach — determinism, opportunity ranking, localization |
 
 ```bash
 npm test          # run the suite once
 npm run test:watch  # watch mode during development
 ```
+
+Every push and pull request to `main` runs **lint + tests + build** automatically via
+GitHub Actions (`.github/workflows/ci.yml`) — see the CI badge at the top.
 
 ---
 

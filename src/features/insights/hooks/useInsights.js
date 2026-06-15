@@ -12,20 +12,16 @@ import { db } from '../../../config/firebase';
 import { useAuthContext } from '../../../context/AuthContext';
 import { currentMonthKey } from '../../../utils/dateUtils';
 import { generateInsights, isGeminiConfigured } from '../services/geminiService';
-
-const FRIENDLY_ERRORS = {
-  GEMINI_NOT_CONFIGURED: 'AI insights are not configured yet. Add your Gemini API key in .env.',
-  EMPTY_RESPONSE: 'The AI returned no recommendations. Please try again.',
-  PARSE_ERROR: 'Could not read the AI response. Please try again.',
-};
+import { generateRuleInsights } from '../services/rulesEngine';
 
 export function useInsights(monthLog) {
   const { user, profile } = useAuthContext();
   const [insights, setInsights] = useState([]);
   const [generatedAt, setGeneratedAt] = useState(null);
+  const [source, setSource] = useState(null); // 'gemini' | 'rules'
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
-  const configured = isGeminiConfigured();
+  const geminiReady = isGeminiConfigured();
 
   const cacheRef = useCallback(
     () => (user ? doc(db, 'users', user.uid, 'insights', currentMonthKey()) : null),
@@ -43,6 +39,7 @@ export function useInsights(monthLog) {
           const data = snap.data();
           setInsights(data.items || []);
           setGeneratedAt(data.generatedAt || null);
+          setSource(data.source || null);
         }
       } catch (e) {
         console.warn('Failed to load cached insights:', e.message);
@@ -57,19 +54,38 @@ export function useInsights(monthLog) {
     if (!user) return;
     setLoading(true);
     setError('');
+
+    // Smart degradation: prefer Gemini for rich, localized advice; if it is
+    // unconfigured or fails for any reason, transparently fall back to the
+    // deterministic rule engine so the user ALWAYS gets useful guidance.
+    let items = [];
+    let usedSource = 'rules';
+    if (geminiReady) {
+      try {
+        items = await generateInsights(profile, monthLog);
+        usedSource = 'gemini';
+      } catch (e) {
+        console.warn('Gemini unavailable, using rule-based coach:', e.message);
+        items = generateRuleInsights(profile, monthLog);
+        usedSource = 'rules';
+      }
+    } else {
+      items = generateRuleInsights(profile, monthLog);
+    }
+
     try {
-      const items = await generateInsights(profile, monthLog);
       const generatedAtIso = new Date().toISOString();
       setInsights(items);
       setGeneratedAt(generatedAtIso);
+      setSource(usedSource);
       // Persist to cache (1 write) so reopening the page costs no API call.
-      await setDoc(cacheRef(), { items, generatedAt: generatedAtIso });
+      await setDoc(cacheRef(), { items, generatedAt: generatedAtIso, source: usedSource });
     } catch (e) {
-      setError(FRIENDLY_ERRORS[e.message] || 'Failed to generate insights. Please try again.');
+      console.warn('Failed to cache insights:', e.message);
     } finally {
       setLoading(false);
     }
-  }, [user, profile, monthLog, cacheRef]);
+  }, [user, profile, monthLog, cacheRef, geminiReady]);
 
-  return { insights, generatedAt, loading, error, configured, refresh };
+  return { insights, generatedAt, source, loading, error, geminiReady, refresh };
 }

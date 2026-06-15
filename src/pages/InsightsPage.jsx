@@ -13,40 +13,44 @@ import InsightCard from '../features/insights/components/InsightCard';
 
 export default function InsightsPage() {
   const { monthLog, loading: dataLoading } = useFootprintData();
-  const { insights, generatedAt, loading, error, configured, refresh } = useInsights(monthLog);
+  const { insights, generatedAt, source, loading, error, geminiReady, refresh } =
+    useInsights(monthLog);
 
   if (dataLoading) return <PageLoader />;
 
   const hasActions = (monthLog?.count ?? 0) > 0;
+  const engineLabel = source === 'rules' ? 'EcoTrace coach engine' : 'Gemini 2.5 Flash';
 
   return (
     <div className="flex flex-col gap-6">
       <div className="flex items-end justify-between flex-wrap gap-3">
         <div>
           <h1 className="section-title">
-            <span aria-hidden="true">✨</span> AI sustainability coach
+            <span aria-hidden="true">✨</span> Sustainability coach
           </h1>
           <p className="text-sm text-[var(--color-text-muted)] mt-1">
-            Personalised, locally-aware recommendations from Gemini 2.5 Flash.
+            Personalised, locally-aware recommendations
+            {insights.length > 0 && ` from ${engineLabel}`}.
             {generatedAt && ` · Updated ${formatLogTime(generatedAt)}`}
           </p>
         </div>
-        <Button onClick={refresh} loading={loading} disabled={!configured || !hasActions}>
+        <Button onClick={refresh} loading={loading} disabled={!hasActions}>
           {insights.length ? 'Regenerate' : 'Generate insights'}
         </Button>
       </div>
 
-      {!configured && (
+      {!geminiReady && (
         <Card>
           <p className="text-sm text-[var(--color-text-secondary)]">
-            AI insights aren’t configured yet. Add your <code>VITE_GEMINI_API_KEY</code> to
-            <code> .env</code> and restart the dev server. See <code>DEPLOYMENT.md</code> for the
-            secure free-tier setup.
+            Live AI insights aren’t configured, so the coach uses EcoTrace’s built-in
+            context-aware engine — you still get tailored, quantified advice. To enable
+            Gemini, add <code>VITE_GEMINI_API_KEY</code> to <code>.env</code> (see{' '}
+            <code>DEPLOYMENT.md</code>).
           </p>
         </Card>
       )}
 
-      {configured && !hasActions && (
+      {!hasActions && (
         <Card>
           <p className="text-sm text-[var(--color-text-secondary)]">
             Log a few green actions on your dashboard first — the coach analyses your real activity
@@ -69,7 +73,7 @@ export default function InsightsPage() {
         </div>
       )}
 
-      {configured && hasActions && insights.length === 0 && !loading && !error && (
+      {hasActions && insights.length === 0 && !loading && !error && (
         <Card>
           <p className="text-sm text-[var(--color-text-secondary)]">
             Tap <strong>Generate insights</strong> to get 3 tailored recommendations based on this
