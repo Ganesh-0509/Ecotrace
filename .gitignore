@@ -16,11 +16,14 @@ firebase-debug.log
 firestore-debug.log
 ui-debug.log
 
-# Editor / OS
+# Editor / OS / tooling
 .vscode/*
 !.vscode/extensions.json
 .idea/
 .DS_Store
+.claude/
+.agents/
+skills-lock.json
 *.suo
 *.ntvs*
 *.njsproj

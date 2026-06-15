@@ -4,6 +4,33 @@
 
 ---
 
+## 🎯 Chosen Vertical, Approach & Logic
+
+**Vertical:** *Sustainability & Climate Action* — a **context-aware personal carbon-coaching assistant**.
+The persona is an everyday individual who wants to lower their environmental impact but is
+overwhelmed by abstract numbers and generic advice. EcoTrace turns that into small, trackable
+daily wins and coaching tailored to *their* life.
+
+**Why it qualifies as a smart, dynamic assistant.** The assistant does not give canned tips.
+It reasons over the user's **context** and makes **logical decisions** from it:
+
+1. **Onboarding** captures a baseline profile — `city`, `transport`, `diet`, `energy`.
+2. As the user logs micro-actions, a **pure deterministic engine** (`src/utils/`) personalises the
+   CO₂e saving for each action using **baseline multipliers** — e.g. a car-heavy commuter is
+   credited *more* for taking transit than someone who already cycles, because their switch
+   avoids more emissions. This is the "logical decision based on user context" in code.
+3. The assistant then **summarises behaviour** (top actions, savings by category) and asks
+   **Gemini 2.5 Flash** for exactly 3 *hyper-localized* recommendations that build on what the
+   user already does well and target their biggest remaining opportunity — referencing their
+   city, transport, diet, and energy source (see `src/features/insights/`).
+4. Insights are **cached per month** in Firestore so the assistant stays useful while remaining
+   inside the free-tier quota.
+
+**Real-world usability:** zero-cost to run, works on any device (responsive SPA), graceful
+"setup required" fallback when keys are absent, and friendly error messaging throughout.
+
+---
+
 ## 🏆 Engineering Scorecard
 
 | Category | Score | Details |
@@ -175,6 +202,25 @@ Pure, deterministic, side-effect-free functions (`src/utils/`):
 
 ---
 
+## 🧪 Testing
+
+The numeric heart of the platform — the carbon engine, the month-key helpers, and the
+emission-factor catalogue — is pure and side-effect-free, so it is covered by fast,
+deterministic **Vitest** unit tests (no React, no network, no Firebase):
+
+| Suite | What it validates |
+|---|---|
+| `carbonCalculator.test.js` | Personalised savings, baseline scaling, rounding, eco-score saturation |
+| `dateUtils.test.js` | Month-key formatting + "is today" logic (deterministic via injected dates) |
+| `emissionFactors.test.js` | Catalogue integrity — no duplicate ids, well-formed actions, lookup index in sync |
+
+```bash
+npm test          # run the suite once
+npm run test:watch  # watch mode during development
+```
+
+---
+
 ## 🚀 Quick Start
 
 ```bash
@@ -261,6 +307,29 @@ Full hardening + step-by-step setup: **[DEPLOYMENT.md](./DEPLOYMENT.md)**.
 | Gemini 2.5 Flash | ~1,500 req/day | Insights are user-triggered and cached per month |
 
 Staying within these keeps the entire platform at **$0** — no billing account attached.
+
+---
+
+## 📌 Assumptions
+
+The solution is built on the following explicit assumptions:
+
+- **Single user persona.** The product targets an individual consumer tracking their *own*
+  footprint; there are no team/organisation or admin roles.
+- **Estimates, not audits.** Emission-factor figures are rounded, illustrative averages drawn
+  from common public sustainability datasets — intended for awareness and behavioural nudging,
+  **not** regulatory-grade carbon accounting.
+- **Self-reported, honest logging.** Savings are credited when the user logs an action; the app
+  does not independently verify that the action occurred.
+- **Email/password identity is sufficient** for the challenge scope (no social login / MFA).
+- **Free-tier only.** The architecture deliberately avoids any paid backend: Gemini is called
+  directly from the browser and secured via Cloud API-key restrictions + per-user Firestore
+  rules, so the whole system runs on Firebase Spark + the free Gemini tier.
+- **Monthly aggregation is acceptable granularity.** All of a month's activity lives in one
+  Firestore document to stay within free quotas; per-second/real-time multi-device sync is out
+  of scope.
+- **Modern browser + network.** The app is an SPA assuming a current evergreen browser; full
+  offline support is not a goal.
 
 ---
 
