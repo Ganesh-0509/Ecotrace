@@ -1,0 +1,42 @@
+rules_version = '2';
+
+// ─────────────────────────────────────────────────────────────────────
+// EcoTrace — Cloud Firestore Security Rules
+// ─────────────────────────────────────────────────────────────────────
+// Because this is a serverless app, the client talks to Firestore
+// directly. These rules are therefore the ONLY barrier protecting user
+// data. They enforce strict per-user (multi-tenant) isolation: an
+// authenticated user may only read/write documents under their own UID.
+// ─────────────────────────────────────────────────────────────────────
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Helper: the request is authenticated and owns the {userId} path.
+    function isOwner(userId) {
+      return request.auth != null && request.auth.uid == userId;
+    }
+
+    // Per-user root document: stores the baseline profile (location,
+    // transport, diet) captured during onboarding.
+    match /users/{userId} {
+      allow read, write: if isOwner(userId);
+
+      // Monthly aggregate logs. Daily micro-actions are appended to an
+      // array inside ONE document per month (users/{uid}/monthly_logs/
+      // {YYYY-MM}) to minimise Spark-plan read/write operations.
+      match /monthly_logs/{logId} {
+        allow read, write: if isOwner(userId);
+      }
+
+      // Cached AI insights, keyed by the period they summarise.
+      match /insights/{insightId} {
+        allow read, write: if isOwner(userId);
+      }
+    }
+
+    // Default-deny everything else.
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
