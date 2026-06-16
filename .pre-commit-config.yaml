@@ -1,0 +1,37 @@
+# Pre-commit hooks for EcoTrace.
+# Install once:  pip install pre-commit && pre-commit install
+# These run the same gates as CI, locally, before each commit. They shell out to
+# the project's npm scripts so there is a single source of truth for each gate.
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v5.0.0
+    hooks:
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+      - id: check-merge-conflict
+      - id: mixed-line-ending
+      - id: check-added-large-files
+        args: ['--maxkb=512']
+
+  - repo: local
+    hooks:
+      - id: prettier
+        name: prettier (format check)
+        entry: npm run format:check
+        language: system
+        pass_filenames: false
+        files: \.(js|jsx|css)$
+
+      - id: eslint
+        name: eslint (lint + jsx-a11y)
+        entry: npm run lint
+        language: system
+        pass_filenames: false
+        files: \.(js|jsx)$
+
+      - id: typecheck
+        name: typecheck (tsc --checkJs)
+        entry: npm run typecheck
+        language: system
+        pass_filenames: false
+        files: \.(js|jsx)$

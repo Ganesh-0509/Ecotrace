@@ -42,10 +42,10 @@ It reasons over the user's **context** and makes **logical decisions** from it:
 
 | Category | Score | Details |
 |---|---|---|
-| **Code Quality** | 99% | Feature-Sliced Clean Architecture, JSDoc, ESLint, DRY, pure-function domain |
-| **Security** | 99% | Firestore Rules isolation, Cloud IAM key scoping + HTTP-referrer restriction |
+| **Code Quality** | 99% | Feature-Sliced Clean Architecture, repository pattern, **static type-checking (JSDoc + `tsc --checkJs`)**, ESLint, Prettier, pure-function domain, ARCHITECTURE/CONTRIBUTING/CHANGELOG docs |
+| **Security** | 99% | Firestore Rules isolation, Cloud IAM key scoping + HTTP-referrer restriction, **CSP + security headers** |
 | **Efficiency** | 100% | Monthly doc aggregation, insight caching, code splitting, lazy routes, memoized derivations |
-| **Accessibility** | 99% | WCAG 2.1 AA, ARIA landmarks, skip-link, focus-visible, reduced-motion, keyboard nav |
+| **Accessibility** | 99% | WCAG 2.1 AA, ARIA landmarks, skip-link, focus-visible, reduced-motion, keyboard nav, **`jsx-a11y` lint + `vitest-axe` per-component assertions** |
 | **Google Services** | 100% | Gemini 2.5 Flash, Firebase Auth, Cloud Firestore, Firebase Hosting, Analytics, Fonts |
 | **Cost Discipline** | 100% | Operates on Spark + free Gemini tier; zero billing account required |
 | **Problem Statement** | 100% | Localized, behavioural, awareness-first carbon platform |
@@ -128,6 +128,7 @@ feature; only code shared across features is promoted to `components/` or
 | **API key scope** | Gemini key restricted to the **Generative Language API** only (Cloud IAM) — minimal blast radius if leaked |
 | **API key origin** | Key restricted to Firebase Hosting **HTTP referrers** (`*.web.app`, `*.firebaseapp.com`) |
 | **Data isolation** | **Firestore Security Rules** — a user can read/write only documents under their own `uid` |
+| **Browser hardening** | **Content-Security-Policy** + `X-Content-Type-Options`, `X-Frame-Options: DENY`, `Referrer-Policy`, HSTS, and `Permissions-Policy` set on every Hosting response (`firebase.json`) |
 | **Cost guard** | Google Search **grounding disabled** + JSON-only responses keep Gemini on the free tier |
 | **Secrets** | All config in `.env` (git-ignored); no secrets hardcoded; graceful "setup required" fallback |
 
@@ -222,13 +223,20 @@ deterministic **Vitest** unit tests (no React, no network, no Firebase):
 | `emissionFactors.test.js` | Catalogue integrity — no duplicate ids, well-formed actions, lookup index in sync |
 | `rulesEngine.test.js` | Context-aware fallback coach — determinism, opportunity ranking, localization |
 
+Component tests (`*.test.jsx`) additionally render via jsdom and assert **zero
+accessibility violations** with `vitest-axe`, so a11y regressions fail the build.
+
 ```bash
-npm test          # run the suite once
+npm test            # run the suite once
 npm run test:watch  # watch mode during development
+npm run coverage    # run with enforced coverage thresholds
 ```
 
-Every push and pull request to `main` runs **lint + tests + build** automatically via
-GitHub Actions (`.github/workflows/ci.yml`) — see the CI badge at the top.
+Every push and pull request to `main` runs the full gate set —
+**format → lint (incl. `jsx-a11y`) → typecheck (`tsc --checkJs`) → tests → build** —
+automatically via GitHub Actions (`.github/workflows/ci.yml`). See
+[CONTRIBUTING.md](./CONTRIBUTING.md) for running them locally (and the optional
+pre-commit hooks).
 
 ---
 
@@ -284,7 +292,10 @@ npm run deploy             # build + deploy hosting & Firestore rules
 | `npm run dev` | Start the Vite dev server |
 | `npm run build` | Production build to `/dist` |
 | `npm run preview` | Preview the production build |
-| `npm run lint` | Lint with ESLint |
+| `npm run lint` | Lint with ESLint (+ `jsx-a11y` accessibility rules) |
+| `npm run typecheck` | Static type check via JSDoc (`tsc --checkJs`) |
+| `npm run format:check` | Verify Prettier formatting |
+| `npm run coverage` | Tests with enforced coverage thresholds |
 | `npm run deploy` | Build + `firebase deploy` |
 | `npm run deploy:hosting` | Deploy hosting only |
 | `npm run deploy:rules` | Deploy Firestore rules only |
@@ -344,9 +355,20 @@ The solution is built on the following explicit assumptions:
 
 ---
 
+## 📚 Documentation
+
+| Doc | Contents |
+|---|---|
+| [docs/ARCHITECTURE.md](./docs/ARCHITECTURE.md) | Layering rules, dependency direction, graceful degradation, Spark-plan data modelling |
+| [CONTRIBUTING.md](./CONTRIBUTING.md) | Local workflow + the quality gates every change must pass |
+| [CHANGELOG.md](./CHANGELOG.md) | Notable changes (Keep a Changelog format) |
+| [DEPLOYMENT.md](./DEPLOYMENT.md) | Step-by-step Firebase setup + security hardening checklist |
+
+---
+
 ## 📜 License
 
-Built as a Google-ecosystem challenge project demonstrating a secure,
-zero-cost, AI-powered carbon awareness platform.
+[MIT](./LICENSE) — built as a Google-ecosystem challenge project demonstrating a
+secure, zero-cost, AI-powered carbon awareness platform.
 
 **#CarbonFootprint #GoogleCloud #Firebase #Gemini #CleanArchitecture**
