@@ -5,6 +5,9 @@ node_modules/
 dist/
 dist-ssr/
 
+# Test coverage output
+coverage/
+
 # Local env files — NEVER commit real keys
 .env
 .env.local
