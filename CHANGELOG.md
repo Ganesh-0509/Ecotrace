@@ -11,8 +11,9 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - **Repository pattern** for the tracking domain: a documented interface with
   swappable Firestore (production) and in-memory (tests/local) implementations,
   decoupling the service layer from the database.
-- **Static type checking** via JSDoc + `jsconfig.json` (`tsc --checkJs`), wired
-  into a `typecheck` npm script and CI.
+- **Migrated the codebase to strict TypeScript** end-to-end (`.ts`/`.tsx`,
+  `tsconfig` with `strict`, `noUnusedLocals`, `noUnusedParameters`), with
+  `typescript-eslint` and a type-checked production build (`tsc --noEmit && vite build`).
 - **Accessibility linting** with `eslint-plugin-jsx-a11y`.
 - **Content-Security-Policy and security headers** on Firebase Hosting.
 - Engineering docs: `docs/ARCHITECTURE.md`, `CONTRIBUTING.md`, this changelog,
