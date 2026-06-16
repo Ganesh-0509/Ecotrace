@@ -42,7 +42,7 @@ It reasons over the user's **context** and makes **logical decisions** from it:
 
 | Category | Score | Details |
 |---|---|---|
-| **Code Quality** | 99% | Feature-Sliced Clean Architecture, repository pattern, **strict end-to-end TypeScript** (`strict` + `noUnusedLocals`/`noUnusedParameters`), `typescript-eslint`, Prettier, pure-function domain, ARCHITECTURE/CONTRIBUTING/CHANGELOG docs |
+| **Code Quality** | 99% | Feature-Sliced Clean Architecture, repository pattern, **static type-checking (JSDoc + `tsc --checkJs`)**, ESLint, Prettier, pure-function domain, ARCHITECTURE/CONTRIBUTING/CHANGELOG docs |
 | **Security** | 99% | Firestore Rules isolation, Cloud IAM key scoping + HTTP-referrer restriction, **CSP + security headers** |
 | **Efficiency** | 100% | Monthly doc aggregation, insight caching, code splitting, lazy routes, memoized derivations |
 | **Accessibility** | 99% | WCAG 2.1 AA, ARIA landmarks, skip-link, focus-visible, reduced-motion, keyboard nav, **`jsx-a11y` lint + `vitest-axe` per-component assertions** |
@@ -91,28 +91,28 @@ See [🛡️ Security](#️-security-layers).
 ```
 src/
 ├── config/
-│   └── firebase.ts              # App, Auth, Firestore, Analytics init
+│   └── firebase.js              # App, Auth, Firestore, Analytics init
 ├── domain/
-│   └── models.ts               # Pure typed entities (profile, log entry, insight)
+│   └── models.js                # Pure entities (profile, log entry, insight)
 ├── utils/
-│   ├── emissionFactors.ts      # Micro-action catalogue + baseline multipliers
-│   ├── carbonCalculator.ts     # Pure savings/score/equivalents math
-│   └── dateUtils.ts            # Month-key + formatting helpers
+│   ├── emissionFactors.js       # Micro-action catalogue + baseline multipliers
+│   ├── carbonCalculator.js      # Pure savings/score/equivalents math
+│   └── dateUtils.js             # Month-key + formatting helpers
 ├── components/                  # Global UI: Logo, Button, Field, Card,
 │                                #   Navbar, Spinner, ProtectedRoute
 ├── context/
-│   └── AuthContext.tsx          # Session + profile single source of truth
+│   └── AuthContext.jsx          # Session + profile single source of truth
 ├── features/
 │   ├── auth/                    # services · hooks · components (AuthForm)
-│   ├── tracking/                # trackingService · repository · useFootprintData ·
+│   ├── tracking/                # trackingService · useFootprintData ·
 │   │                            #   ActionLogger · StatCard · LogList · EcoScoreRing
 │   └── insights/                # geminiService · prompts · useInsights · InsightCard
 ├── layouts/
-│   └── DashboardLayout.tsx      # Nav + routed <Outlet/>
+│   └── DashboardLayout.jsx      # Nav + routed <Outlet/>
 ├── pages/                       # Landing · Auth · Onboarding · Dashboard ·
 │                                #   Insights · Profile
-├── App.tsx                      # Routing root (lazy-loaded protected area)
-└── main.tsx                     # Entry
+├── App.jsx                      # Routing root (lazy-loaded protected area)
+└── main.jsx                     # Entry
 ```
 
 **Encapsulation rule:** code used by a single feature lives inside that
@@ -233,7 +233,7 @@ npm run coverage    # run with enforced coverage thresholds
 ```
 
 Every push and pull request to `main` runs the full gate set —
-**format → lint (incl. `jsx-a11y`) → typecheck (strict `tsc`) → tests → build** —
+**format → lint (incl. `jsx-a11y`) → typecheck (`tsc --checkJs`) → tests → build** —
 automatically via GitHub Actions (`.github/workflows/ci.yml`). See
 [CONTRIBUTING.md](./CONTRIBUTING.md) for running them locally (and the optional
 pre-commit hooks).
@@ -293,7 +293,7 @@ npm run deploy             # build + deploy hosting & Firestore rules
 | `npm run build` | Production build to `/dist` |
 | `npm run preview` | Preview the production build |
 | `npm run lint` | Lint with ESLint (+ `jsx-a11y` accessibility rules) |
-| `npm run typecheck` | Strict TypeScript type check (`tsc --noEmit`) |
+| `npm run typecheck` | Static type check via JSDoc (`tsc --checkJs`) |
 | `npm run format:check` | Verify Prettier formatting |
 | `npm run coverage` | Tests with enforced coverage thresholds |
 | `npm run deploy` | Build + `firebase deploy` |
@@ -308,7 +308,7 @@ Full hardening + step-by-step setup: **[DEPLOYMENT.md](./DEPLOYMENT.md)**.
 
 | Layer | Technology |
 |---|---|
-| Frontend | React 19, **TypeScript (strict)**, Vite 6, Tailwind CSS v4, React Router 7 |
+| Frontend | React 19, Vite 6, Tailwind CSS v4, React Router 7 |
 | State | React Context + custom hooks |
 | AI | Google Gemini 2.5 Flash (`@google/genai`) |
 | Auth & DB | Firebase Authentication + Cloud Firestore (Spark plan) |

@@ -37,7 +37,7 @@ on every push and pull request to `main`. Run them locally before pushing:
 | --- | --- | --- |
 | Format | `npm run format:check` | Consistent Prettier formatting |
 | Lint | `npm run lint` | ESLint style + `jsx-a11y` accessibility rules |
-| Types | `npm run typecheck` | Strict TypeScript verified by `tsc --noEmit` |
+| Types | `npm run typecheck` | JSDoc types verified by `tsc --checkJs` |
 | Tests | `npm test` | Vitest unit + component (+ axe a11y) suites |
 | Coverage | `npm run coverage` | Thresholds on the pure logic layers |
 | Build | `npm run build` | Production bundle compiles |
@@ -56,13 +56,13 @@ pre-commit install
 
 ## Coding conventions
 
-- **Type everything (strict TypeScript).** Annotate exported functions and
-  component props; `tsc` runs with `strict` enabled — avoid `any`.
+- **Type with JSDoc.** Annotate exported functions/components so `tsc --checkJs`
+  can verify them; avoid `any`.
 - **No magic numbers.** Emission factors and thresholds are named constants that
-  cite their source (see `src/utils/emissionFactors.ts`).
+  cite their source (see `src/utils/emissionFactors.js`).
 - **Accessibility by construction.** Use semantic HTML and the shared `Field`
   component; new interactive UI must pass the `jsx-a11y` rules and its axe test.
-- **Tests co-locate** with the unit they cover (`Foo.tsx` → `Foo.test.tsx`).
+- **Tests co-locate** with the unit they cover (`Foo.jsx` → `Foo.test.jsx`).
 
 ## Commit messages
 

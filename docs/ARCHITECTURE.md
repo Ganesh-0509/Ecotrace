@@ -69,8 +69,8 @@ accessibility is consistent by construction.
 ## Quality gates
 
 Every push runs **lint** (ESLint + `jsx-a11y` accessibility rules),
-**formatting** (Prettier), **strict TypeScript type checks** (`tsc --noEmit`
-with `strict` enabled), and the **Vitest** suite with enforced coverage thresholds on
+**formatting** (Prettier), **static type checks** (JSDoc-typed JS verified by
+`tsc --checkJs`), and the **Vitest** suite with enforced coverage thresholds on
 the pure logic layers, plus a production build — see
 [CONTRIBUTING.md](../CONTRIBUTING.md). The same gates run locally via the
 `.pre-commit-config.yaml` hooks.

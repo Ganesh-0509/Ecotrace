@@ -1,23 +1,21 @@
-// ESLint flat config: TypeScript correctness (typescript-eslint), React hooks
-// rules, and accessibility (jsx-a11y) checks — all run via `npm run lint` / CI.
 import js from '@eslint/js';
 import globals from 'globals';
 import reactHooks from 'eslint-plugin-react-hooks';
 import reactRefresh from 'eslint-plugin-react-refresh';
 import jsxA11y from 'eslint-plugin-jsx-a11y';
-import tseslint from 'typescript-eslint';
 
-export default tseslint.config(
-  // Generated output and ambient type declarations are not linted.
-  { ignores: ['dist', 'coverage', 'node_modules', '**/*.d.ts'] },
-  js.configs.recommended,
-  ...tseslint.configs.recommended,
+export default [
+  { ignores: ['dist', 'coverage'] },
   {
-    files: ['src/**/*.{ts,tsx}', 'vite.config.ts'],
+    files: ['**/*.{js,jsx}'],
     languageOptions: {
-      ecmaVersion: 'latest',
-      sourceType: 'module',
-      globals: { ...globals.browser },
+      ecmaVersion: 2021,
+      globals: globals.browser,
+      parserOptions: {
+        ecmaVersion: 'latest',
+        ecmaFeatures: { jsx: true },
+        sourceType: 'module',
+      },
     },
     plugins: {
       'react-hooks': reactHooks,
@@ -25,20 +23,30 @@ export default tseslint.config(
       'jsx-a11y': jsxA11y,
     },
     rules: {
+      ...js.configs.recommended.rules,
       ...reactHooks.configs.recommended.rules,
+      // Accessibility lint gate — catches missing labels, invalid ARIA,
+      // non-interactive handlers, etc. at build time (mirrors CI).
       ...jsxA11y.flatConfigs.recommended.rules,
-      'react-hooks/rules-of-hooks': 'error',
-      'react-hooks/exhaustive-deps': 'error',
+      'no-unused-vars': ['error', { varsIgnorePattern: '^[A-Z_]' }],
       'react-refresh/only-export-components': ['warn', { allowConstantExport: true }],
-      '@typescript-eslint/no-unused-vars': [
-        'error',
-        { argsIgnorePattern: '^_', varsIgnorePattern: '^_' },
-      ],
     },
   },
   {
-    // Vitest exposes globals (config sets globals: true); allow Node globals too.
-    files: ['**/*.test.{ts,tsx}', 'src/test/**'],
-    languageOptions: { globals: { ...globals.node } },
-  }
-);
+    // Test files: expose Vitest globals (config uses globals: true).
+    files: ['**/*.test.{js,jsx}', 'src/test/**'],
+    languageOptions: {
+      globals: {
+        ...globals.node,
+        describe: 'readonly',
+        it: 'readonly',
+        expect: 'readonly',
+        vi: 'readonly',
+        beforeEach: 'readonly',
+        afterEach: 'readonly',
+        beforeAll: 'readonly',
+        afterAll: 'readonly',
+      },
+    },
+  },
+];
