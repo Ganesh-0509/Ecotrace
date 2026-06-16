@@ -35,8 +35,15 @@ export async function registerWithEmail(email, password, displayName) {
   if (displayName) {
     await updateProfile(user, { displayName });
   }
-  const profile = createUserProfile({ displayName });
-  await setDoc(doc(db, 'users', user.uid), profile, { merge: true });
+  // Seed the doc WITHOUT `profileCompleted`. This write can land after the
+  // onboarding write (auth-state re-fires re-read the doc), and because writes
+  // merge with last-value-wins, including `profileCompleted: false` here would
+  // reset the flag onboarding set to true — stranding the user on /onboarding.
+  // Omitting it means an absent flag (read as "not completed") until onboarding
+  // sets it true, and a late seed write can never clobber that true.
+  const { profileCompleted, ...seed } = createUserProfile({ displayName });
+  void profileCompleted;
+  await setDoc(doc(db, 'users', user.uid), seed, { merge: true });
   return user;
 }
 
