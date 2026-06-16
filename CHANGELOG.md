@@ -21,6 +21,13 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - Prettier + EditorConfig, a Vitest component/unit suite (with axe accessibility
   assertions) and coverage thresholds, and a GitHub Actions CI pipeline.
 
+### Fixed
+
+- Users could get stranded on the onboarding screen: the registration seed wrote
+  `profileCompleted: false`, which (via merge writes + auth-state re-reads) could
+  land after the onboarding write and reset the flag. The seed no longer writes
+  the flag, so onboarding's `true` is authoritative.
+
 ### Changed
 
 - `trackingService` slimmed to thin use-cases that delegate to the repository,
