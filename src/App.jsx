@@ -27,15 +27,14 @@ function AppRoutes() {
   if (loading) return <FullScreenLoader text="Starting EcoTrace" />;
 
   // Where a signed-in user should land depending on onboarding state.
-  const homeRedirect = user
-    ? profileCompleted
-      ? '/dashboard'
-      : '/onboarding'
-    : null;
+  const homeRedirect = user ? (profileCompleted ? '/dashboard' : '/onboarding') : null;
 
   return (
     <Routes>
-      <Route path="/" element={homeRedirect ? <Navigate to={homeRedirect} replace /> : <LandingPage />} />
+      <Route
+        path="/"
+        element={homeRedirect ? <Navigate to={homeRedirect} replace /> : <LandingPage />}
+      />
       <Route
         path="/auth"
         element={homeRedirect ? <Navigate to={homeRedirect} replace /> : <AuthPage />}

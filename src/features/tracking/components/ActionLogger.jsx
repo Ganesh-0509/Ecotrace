@@ -68,7 +68,10 @@ export default function ActionLogger({ onLog, logging }) {
                   {isPending ? (
                     <span className="w-4 h-4 border-2 border-[var(--color-primary)]/30 border-t-[var(--color-primary)] rounded-full animate-spin" />
                   ) : (
-                    <span className="text-[var(--color-primary)] text-lg font-bold" aria-hidden="true">
+                    <span
+                      className="text-[var(--color-primary)] text-lg font-bold"
+                      aria-hidden="true"
+                    >
                       +
                     </span>
                   )}

@@ -42,10 +42,9 @@ export default function InsightsPage() {
       {!geminiReady && (
         <Card>
           <p className="text-sm text-[var(--color-text-secondary)]">
-            Live AI insights aren’t configured, so the coach uses EcoTrace’s built-in
-            context-aware engine — you still get tailored, quantified advice. To enable
-            Gemini, add <code>VITE_GEMINI_API_KEY</code> to <code>.env</code> (see{' '}
-            <code>DEPLOYMENT.md</code>).
+            Live AI insights aren’t configured, so the coach uses EcoTrace’s built-in context-aware
+            engine — you still get tailored, quantified advice. To enable Gemini, add{' '}
+            <code>VITE_GEMINI_API_KEY</code> to <code>.env</code> (see <code>DEPLOYMENT.md</code>).
           </p>
         </Card>
       )}

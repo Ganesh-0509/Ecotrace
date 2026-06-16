@@ -8,6 +8,8 @@ import {
   savingsByCategory,
   toEquivalents,
   ecoScore,
+  footprintContext,
+  MONTHLY_SAVINGS_TARGET_KG,
 } from './carbonCalculator';
 
 describe('estimateSaving', () => {
@@ -81,5 +83,27 @@ describe('ecoScore', () => {
 
   it('scales linearly in between', () => {
     expect(ecoScore(30)).toBe(50);
+  });
+});
+
+describe('footprintContext', () => {
+  it('reports 0% progress and offset with no savings', () => {
+    const ctx = footprintContext(0);
+    expect(ctx.progressPct).toBe(0);
+    expect(ctx.shareOfAveragePct).toBe(0);
+    expect(ctx.targetKg).toBe(MONTHLY_SAVINGS_TARGET_KG);
+  });
+
+  it('caps goal progress at 100%', () => {
+    expect(footprintContext(MONTHLY_SAVINGS_TARGET_KG * 5).progressPct).toBe(100);
+  });
+
+  it('computes progress toward the monthly goal', () => {
+    // Half of the target should read ~50%.
+    expect(footprintContext(MONTHLY_SAVINGS_TARGET_KG / 2).progressPct).toBe(50);
+  });
+
+  it('treats negative input as zero', () => {
+    expect(footprintContext(-10).progressPct).toBe(0);
   });
 });

@@ -28,7 +28,11 @@ export function FullScreenLoader({ text = 'Loading' }) {
 
 export function PageLoader() {
   return (
-    <div className="flex items-center justify-center h-full min-h-[50vh]" role="status" aria-busy="true">
+    <div
+      className="flex items-center justify-center h-full min-h-[50vh]"
+      role="status"
+      aria-busy="true"
+    >
       <div className="w-8 h-8 border-2 border-[var(--color-primary)]/20 border-t-[var(--color-primary)] rounded-full animate-spin" />
       <span className="sr-only">Loading page</span>
     </div>

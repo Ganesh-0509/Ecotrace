@@ -5,11 +5,7 @@
 // the user's baseline profile. Pure and deterministic, so it is trivially
 // unit-testable and can run anywhere (UI, future tests, etc.).
 // ─────────────────────────────────────────────────────────────────────
-import {
-  ACTION_INDEX,
-  ACTION_CATEGORIES,
-  BASELINE_MULTIPLIERS,
-} from './emissionFactors';
+import { ACTION_INDEX, ACTION_CATEGORIES, BASELINE_MULTIPLIERS } from './emissionFactors';
 
 /**
  * Returns the personalised CO2e saving (kg) for a single micro-action,
@@ -52,6 +48,7 @@ export function sumSavings(entries = []) {
  * @returns {Object<string, number>} category -> kg saved
  */
 export function savingsByCategory(entries = []) {
+  /** @type {Object<string, number>} */
   const totals = {};
   for (const entry of entries) {
     const key = entry.category || 'other';
@@ -83,4 +80,26 @@ export function toEquivalents(kg) {
 export function ecoScore(monthlyKg) {
   const capped = Math.min(monthlyKg, 60);
   return Math.round((capped / 60) * 100);
+}
+
+// ── Benchmarks (put the user's savings in real-world context) ──────────
+// Average per-capita emissions ≈ 4.7 t CO₂e/yr (Our World in Data, 2022)
+// → ≈ 390 kg/month. A Paris-aligned 2030 pathway is ≈ 2.3 t/capita/yr.
+export const AVG_MONTHLY_FOOTPRINT_KG = 390;
+export const MONTHLY_SAVINGS_TARGET_KG = 25; // aspirational personal goal
+
+/**
+ * Frames monthly savings against a personal goal and the average footprint,
+ * so the headline number means something rather than floating in a vacuum.
+ * @param {number} monthlySavedKg
+ */
+export function footprintContext(monthlySavedKg = 0) {
+  const saved = Math.max(0, monthlySavedKg);
+  return {
+    targetKg: MONTHLY_SAVINGS_TARGET_KG,
+    progressPct: Math.min(100, Math.round((saved / MONTHLY_SAVINGS_TARGET_KG) * 100)),
+    avgMonthlyFootprintKg: AVG_MONTHLY_FOOTPRINT_KG,
+    // Share of an average person's monthly footprint these savings offset.
+    shareOfAveragePct: Number(((saved / AVG_MONTHLY_FOOTPRINT_KG) * 100).toFixed(1)),
+  };
 }

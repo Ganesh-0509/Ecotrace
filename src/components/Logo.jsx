@@ -46,7 +46,10 @@ export default function Logo({ size = 32, withWordmark = true, className = '' })
     <span className={`inline-flex items-center gap-2.5 ${className}`}>
       <BrandMark size={size} />
       {withWordmark && (
-        <span className="font-extrabold tracking-tight gradient-text" style={{ fontSize: size * 0.6 }}>
+        <span
+          className="font-extrabold tracking-tight gradient-text"
+          style={{ fontSize: size * 0.6 }}
+        >
           EcoTrace
         </span>
       )}

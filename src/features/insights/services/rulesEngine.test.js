@@ -21,7 +21,7 @@ describe('generateRuleInsights', () => {
     expect(a).toEqual(b);
   });
 
-  it('prioritises the user\'s most carbon-intensive baseline', () => {
+  it("prioritises the user's most carbon-intensive baseline", () => {
     // A car-driving, meat-heavy, grid-powered user: transport/food/energy
     // should outrank waste/water, and the high-impact variants should fire.
     const out = generateRuleInsights(
@@ -47,10 +47,7 @@ describe('generateRuleInsights', () => {
   });
 
   it('localises advice when a city is provided', () => {
-    const out = generateRuleInsights(
-      { transport: 'car', city: 'Chennai' },
-      { entries: [] }
-    );
+    const out = generateRuleInsights({ transport: 'car', city: 'Chennai' }, { entries: [] });
     const transport = out.find((r) => r.category === 'transport');
     expect(transport.detail).toContain('Chennai');
   });

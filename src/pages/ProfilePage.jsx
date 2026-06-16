@@ -65,8 +65,19 @@ export default function ProfilePage() {
 
       <Card>
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-          <Field id="displayName" label="Name" value={form.displayName} onChange={update('displayName')} />
-          <Field id="city" label="City / region" value={form.city} onChange={update('city')} required />
+          <Field
+            id="displayName"
+            label="Name"
+            value={form.displayName}
+            onChange={update('displayName')}
+          />
+          <Field
+            id="city"
+            label="City / region"
+            value={form.city}
+            onChange={update('city')}
+            required
+          />
           <Field
             id="transport"
             label="Primary transport"
@@ -74,7 +85,13 @@ export default function ProfilePage() {
             value={form.transport}
             onChange={update('transport')}
           />
-          <Field id="diet" label="Typical diet" options={DIET_OPTIONS} value={form.diet} onChange={update('diet')} />
+          <Field
+            id="diet"
+            label="Typical diet"
+            options={DIET_OPTIONS}
+            value={form.diet}
+            onChange={update('diet')}
+          />
           <Field
             id="energy"
             label="Home energy source"

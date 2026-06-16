@@ -25,12 +25,36 @@ const STEPS = [
 ];
 
 const FEATURES = [
-  { icon: '📋', title: 'One-tap logging', text: 'A frictionless logger across transport, food, energy, waste, and water — no spreadsheets, no utility bills.' },
-  { icon: '📊', title: 'Personalised telemetry', text: 'A pure-function carbon engine scales every saving to your baseline lifestyle, so the numbers mean something.' },
-  { icon: '🎯', title: 'Gamified eco score', text: 'A monthly 0–100 score and streak-friendly feedback loop keep you coming back and improving.' },
-  { icon: '🧠', title: 'Context-aware AI', text: 'Recommendations reference your city, local climate initiatives, and what you already do well — never generic.' },
-  { icon: '🌳', title: 'Relatable impact', text: 'Savings translate into tree-days and kilometres not driven, making abstract CO₂ tangible.' },
-  { icon: '🔒', title: 'Private by design', text: 'Strict per-user data isolation via Firestore Security Rules. Your data is yours, full stop.' },
+  {
+    icon: '📋',
+    title: 'One-tap logging',
+    text: 'A frictionless logger across transport, food, energy, waste, and water — no spreadsheets, no utility bills.',
+  },
+  {
+    icon: '📊',
+    title: 'Personalised telemetry',
+    text: 'A pure-function carbon engine scales every saving to your baseline lifestyle, so the numbers mean something.',
+  },
+  {
+    icon: '🎯',
+    title: 'Gamified eco score',
+    text: 'A monthly 0–100 score and streak-friendly feedback loop keep you coming back and improving.',
+  },
+  {
+    icon: '🧠',
+    title: 'Context-aware AI',
+    text: 'Recommendations reference your city, local climate initiatives, and what you already do well — never generic.',
+  },
+  {
+    icon: '🌳',
+    title: 'Relatable impact',
+    text: 'Savings translate into tree-days and kilometres not driven, making abstract CO₂ tangible.',
+  },
+  {
+    icon: '🔒',
+    title: 'Private by design',
+    text: 'Strict per-user data isolation via Firestore Security Rules. Your data is yours, full stop.',
+  },
 ];
 
 const STATS = [
@@ -45,19 +69,22 @@ const SAMPLE_INSIGHTS = [
     category: '🚲',
     impact: '~12 kg/mo',
     title: 'Swap weekend short drives for cycling',
-    detail: 'You drive 3 short trips most weekends. Replacing them with a bike aligns with your city’s new non-motorized transport corridor and saves ~12 kg CO₂ a month.',
+    detail:
+      'You drive 3 short trips most weekends. Replacing them with a bike aligns with your city’s new non-motorized transport corridor and saves ~12 kg CO₂ a month.',
   },
   {
     category: '⚡',
     impact: '~15%',
     title: 'Shift heavy appliances off-peak',
-    detail: 'Running your washer and dishwasher after 9pm taps into a cleaner local grid mix and trims your energy footprint by roughly 15%.',
+    detail:
+      'Running your washer and dishwasher after 9pm taps into a cleaner local grid mix and trims your energy footprint by roughly 15%.',
   },
   {
     category: '🥗',
     impact: '~8 kg/mo',
     title: 'Add one plant-based dinner',
-    detail: 'You already log vegetarian lunches. Extending that to two dinners a week builds on the habit and saves another ~8 kg CO₂ monthly.',
+    detail:
+      'You already log vegetarian lunches. Extending that to two dinners a week builds on the habit and saves another ~8 kg CO₂ monthly.',
   },
 ];
 
@@ -85,17 +112,32 @@ export default function LandingPage() {
     <div className="relative bg-[var(--color-bg-dark)] overflow-x-hidden">
       {/* ── Nav ── */}
       <header className="sticky top-0 z-40 border-b border-[var(--color-border)] bg-[var(--color-bg-card)]/75 backdrop-blur-md">
-        <nav className="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between" aria-label="Primary">
+        <nav
+          className="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between"
+          aria-label="Primary"
+        >
           <Logo size={30} />
           <div className="hidden md:flex items-center gap-6 text-sm font-medium text-[var(--color-text-secondary)]">
-            <a href="#how" className="hover:text-[var(--color-primary)] transition-colors">How it works</a>
-            <a href="#features" className="hover:text-[var(--color-primary)] transition-colors">Features</a>
-            <a href="#impact" className="hover:text-[var(--color-primary)] transition-colors">Impact</a>
-            <a href="#faq" className="hover:text-[var(--color-primary)] transition-colors">FAQ</a>
+            <a href="#how" className="hover:text-[var(--color-primary)] transition-colors">
+              How it works
+            </a>
+            <a href="#features" className="hover:text-[var(--color-primary)] transition-colors">
+              Features
+            </a>
+            <a href="#impact" className="hover:text-[var(--color-primary)] transition-colors">
+              Impact
+            </a>
+            <a href="#faq" className="hover:text-[var(--color-primary)] transition-colors">
+              FAQ
+            </a>
           </div>
           <div className="flex items-center gap-2">
-            <Link to="/auth" className="btn-secondary !py-2 !px-4 text-sm">Sign in</Link>
-            <Link to="/auth" className="btn-primary !py-2 !px-4 text-sm hidden sm:inline-flex">Get started</Link>
+            <Link to="/auth" className="btn-secondary !py-2 !px-4 text-sm">
+              Sign in
+            </Link>
+            <Link to="/auth" className="btn-primary !py-2 !px-4 text-sm hidden sm:inline-flex">
+              Get started
+            </Link>
           </div>
         </nav>
       </header>
@@ -103,8 +145,16 @@ export default function LandingPage() {
       <main>
         {/* ── Hero ── */}
         <section className="relative max-w-6xl mx-auto px-4 pt-16 pb-12 md:pt-24 md:pb-20 bg-grid">
-          <div className="hero-glow w-[420px] h-[420px] -top-20 -left-20" style={{ background: 'var(--color-primary-glow)' }} aria-hidden="true" />
-          <div className="hero-glow w-[360px] h-[360px] top-10 right-0" style={{ background: 'var(--color-secondary)' }} aria-hidden="true" />
+          <div
+            className="hero-glow w-[420px] h-[420px] -top-20 -left-20"
+            style={{ background: 'var(--color-primary-glow)' }}
+            aria-hidden="true"
+          />
+          <div
+            className="hero-glow w-[360px] h-[360px] top-10 right-0"
+            style={{ background: 'var(--color-secondary)' }}
+            aria-hidden="true"
+          />
 
           <div className="relative grid lg:grid-cols-[1.1fr_0.9fr] gap-12 items-center">
             <div>
@@ -115,17 +165,27 @@ export default function LandingPage() {
               </h1>
               <p className="reveal-3 mt-5 max-w-xl text-lg text-[var(--color-text-secondary)] leading-relaxed">
                 EcoTrace measures the carbon you save with everyday actions and pairs it with
-                personalised, locally-aware AI coaching — so progress feels obvious, motivating,
-                and genuinely yours.
+                personalised, locally-aware AI coaching — so progress feels obvious, motivating, and
+                genuinely yours.
               </p>
               <div className="reveal-4 mt-8 flex flex-wrap items-center gap-3">
-                <Link to="/auth" className="btn-primary">Start tracking free</Link>
-                <a href="#how" className="btn-secondary">See how it works</a>
+                <Link to="/auth" className="btn-primary">
+                  Start tracking free
+                </Link>
+                <a href="#how" className="btn-secondary">
+                  See how it works
+                </a>
               </div>
               <div className="reveal-4 mt-6 flex flex-wrap items-center gap-x-6 gap-y-2 text-sm text-[var(--color-text-muted)]">
-                <span className="flex items-center gap-1.5"><span aria-hidden="true">✅</span> No credit card</span>
-                <span className="flex items-center gap-1.5"><span aria-hidden="true">✅</span> 100% Google free-tier</span>
-                <span className="flex items-center gap-1.5"><span aria-hidden="true">✅</span> Private by design</span>
+                <span className="flex items-center gap-1.5">
+                  <span aria-hidden="true">✅</span> No credit card
+                </span>
+                <span className="flex items-center gap-1.5">
+                  <span aria-hidden="true">✅</span> 100% Google free-tier
+                </span>
+                <span className="flex items-center gap-1.5">
+                  <span aria-hidden="true">✅</span> Private by design
+                </span>
               </div>
             </div>
 
@@ -133,7 +193,9 @@ export default function LandingPage() {
             <div className="relative hidden lg:block" aria-hidden="true">
               <div className="glass-card-static p-5 animate-float-slow">
                 <div className="flex items-center justify-between mb-4">
-                  <span className="text-sm font-semibold text-[var(--color-text-muted)]">This month</span>
+                  <span className="text-sm font-semibold text-[var(--color-text-muted)]">
+                    This month
+                  </span>
                   <span className="ai-badge ai-badge-cloud">eco score 78</span>
                 </div>
                 <div className="flex items-end gap-1.5 h-28">
@@ -143,7 +205,8 @@ export default function LandingPage() {
                       className="flex-1 rounded-t-md"
                       style={{
                         height: `${h}%`,
-                        background: 'linear-gradient(to top, var(--color-primary-dark), var(--color-primary-glow))',
+                        background:
+                          'linear-gradient(to top, var(--color-primary-dark), var(--color-primary-glow))',
                       }}
                     />
                   ))}
@@ -164,7 +227,9 @@ export default function LandingPage() {
                   <span className="feature-icon !w-9 !h-9 !text-lg">✨</span>
                   <div>
                     <div className="text-xs font-semibold">AI insight</div>
-                    <div className="text-[11px] text-[var(--color-text-muted)]">Cycle weekend trips · −12 kg/mo</div>
+                    <div className="text-[11px] text-[var(--color-text-muted)]">
+                      Cycle weekend trips · −12 kg/mo
+                    </div>
                   </div>
                 </div>
               </div>
@@ -188,13 +253,14 @@ export default function LandingPage() {
         <section className="section max-w-4xl mx-auto px-4 text-center">
           <span className="pill">Why it matters</span>
           <h2 className="mt-4 text-3xl md:text-4xl font-extrabold tracking-tight">
-            Individual action feels invisible. We make it <span className="gradient-text">visible</span>.
+            Individual action feels invisible. We make it{' '}
+            <span className="gradient-text">visible</span>.
           </h2>
           <p className="mt-4 text-lg text-[var(--color-text-secondary)] leading-relaxed">
-            Climate change is systemic — but personal choices in transport, diet, and energy still add
-            up. The problem is that they’re abstract and unrewarding to track. EcoTrace closes that gap:
-            it quantifies each action, celebrates progress, and uses AI to connect your daily habits to
-            the bigger picture and local initiatives in your city.
+            Climate change is systemic — but personal choices in transport, diet, and energy still
+            add up. The problem is that they’re abstract and unrewarding to track. EcoTrace closes
+            that gap: it quantifies each action, celebrates progress, and uses AI to connect your
+            daily habits to the bigger picture and local initiatives in your city.
           </p>
         </section>
 
@@ -202,28 +268,39 @@ export default function LandingPage() {
         <section id="how" className="section max-w-6xl mx-auto px-4">
           <div className="text-center max-w-2xl mx-auto">
             <span className="pill">How it works</span>
-            <h2 className="mt-4 text-3xl md:text-4xl font-extrabold tracking-tight">Three steps to a lighter footprint</h2>
+            <h2 className="mt-4 text-3xl md:text-4xl font-extrabold tracking-tight">
+              Three steps to a lighter footprint
+            </h2>
           </div>
           <div className="mt-12 grid gap-6 md:grid-cols-3">
             {STEPS.map((step, i) => (
               <div key={step.title} className="feature-tile">
                 <div className="flex items-center gap-3">
                   <span className="step-num">{i + 1}</span>
-                  <span className="text-3xl" aria-hidden="true">{step.icon}</span>
+                  <span className="text-3xl" aria-hidden="true">
+                    {step.icon}
+                  </span>
                 </div>
                 <h3 className="mt-4 text-lg font-bold">{step.title}</h3>
-                <p className="mt-2 text-sm text-[var(--color-text-secondary)] leading-relaxed">{step.text}</p>
+                <p className="mt-2 text-sm text-[var(--color-text-secondary)] leading-relaxed">
+                  {step.text}
+                </p>
               </div>
             ))}
           </div>
         </section>
 
         {/* ── Features ── */}
-        <section id="features" className="section bg-[var(--color-bg-card)] border-y border-[var(--color-border)]">
+        <section
+          id="features"
+          className="section bg-[var(--color-bg-card)] border-y border-[var(--color-border)]"
+        >
           <div className="max-w-6xl mx-auto px-4">
             <div className="text-center max-w-2xl mx-auto">
               <span className="pill">Features</span>
-              <h2 className="mt-4 text-3xl md:text-4xl font-extrabold tracking-tight">Everything you need to act</h2>
+              <h2 className="mt-4 text-3xl md:text-4xl font-extrabold tracking-tight">
+                Everything you need to act
+              </h2>
               <p className="mt-3 text-[var(--color-text-secondary)]">
                 Built for momentum: fast to log, satisfying to watch, and smart enough to guide you.
               </p>
@@ -231,9 +308,13 @@ export default function LandingPage() {
             <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
               {FEATURES.map((f) => (
                 <article key={f.title} className="feature-tile">
-                  <span className="feature-icon" aria-hidden="true">{f.icon}</span>
+                  <span className="feature-icon" aria-hidden="true">
+                    {f.icon}
+                  </span>
                   <h3 className="mt-4 text-lg font-bold">{f.title}</h3>
-                  <p className="mt-2 text-sm text-[var(--color-text-secondary)] leading-relaxed">{f.text}</p>
+                  <p className="mt-2 text-sm text-[var(--color-text-secondary)] leading-relaxed">
+                    {f.text}
+                  </p>
                 </article>
               ))}
             </div>
@@ -262,18 +343,25 @@ export default function LandingPage() {
                 Insights tuned to your life, not generic tips
               </h2>
               <p className="mt-3 text-[var(--color-text-secondary)]">
-                A glimpse of the kind of localized, actionable coaching Gemini generates from your activity.
+                A glimpse of the kind of localized, actionable coaching Gemini generates from your
+                activity.
               </p>
             </div>
             <div className="mt-12 grid gap-5 md:grid-cols-3">
               {SAMPLE_INSIGHTS.map((insight) => (
                 <div key={insight.title} className="glass-card-static p-5 flex flex-col gap-2">
                   <div className="flex items-start justify-between gap-2">
-                    <span className="text-2xl" aria-hidden="true">{insight.category}</span>
-                    <span className="ai-badge ai-badge-cloud whitespace-nowrap">{insight.impact}</span>
+                    <span className="text-2xl" aria-hidden="true">
+                      {insight.category}
+                    </span>
+                    <span className="ai-badge ai-badge-cloud whitespace-nowrap">
+                      {insight.impact}
+                    </span>
                   </div>
                   <h3 className="text-base font-bold">{insight.title}</h3>
-                  <p className="text-sm text-[var(--color-text-secondary)] leading-relaxed">{insight.detail}</p>
+                  <p className="text-sm text-[var(--color-text-secondary)] leading-relaxed">
+                    {insight.detail}
+                  </p>
                 </div>
               ))}
             </div>
@@ -284,7 +372,9 @@ export default function LandingPage() {
         <section id="faq" className="section max-w-3xl mx-auto px-4">
           <div className="text-center">
             <span className="pill">FAQ</span>
-            <h2 className="mt-4 text-3xl md:text-4xl font-extrabold tracking-tight">Questions, answered</h2>
+            <h2 className="mt-4 text-3xl md:text-4xl font-extrabold tracking-tight">
+              Questions, answered
+            </h2>
           </div>
           <div className="mt-10 flex flex-col gap-3">
             {FAQS.map((item) => (
@@ -299,13 +389,18 @@ export default function LandingPage() {
         {/* ── Final CTA ── */}
         <section className="max-w-6xl mx-auto px-4 pb-20">
           <div className="cta-banner text-center">
-            <div className="hero-glow w-72 h-72 -top-10 -right-10" style={{ background: '#ffffff', opacity: 0.12 }} aria-hidden="true" />
+            <div
+              className="hero-glow w-72 h-72 -top-10 -right-10"
+              style={{ background: '#ffffff', opacity: 0.12 }}
+              aria-hidden="true"
+            />
             <div className="relative">
               <h2 className="text-3xl md:text-4xl font-extrabold tracking-tight">
                 Ready to see your impact add up?
               </h2>
               <p className="mt-3 text-white/85 max-w-xl mx-auto">
-                Join free, set your baseline in under a minute, and log your first green action today.
+                Join free, set your baseline in under a minute, and log your first green action
+                today.
               </p>
               <Link
                 to="/auth"
@@ -327,16 +422,33 @@ export default function LandingPage() {
               <span className="font-extrabold gradient-text text-lg">EcoTrace</span>
             </div>
             <p className="mt-3 text-sm text-[var(--color-text-muted)] max-w-xs">
-              Carbon footprint intelligence for everyday people — measurable, motivating, and AI-guided.
+              Carbon footprint intelligence for everyday people — measurable, motivating, and
+              AI-guided.
             </p>
           </div>
           <div>
             <h3 className="text-sm font-semibold mb-3">Product</h3>
             <ul className="flex flex-col gap-2 text-sm text-[var(--color-text-muted)]">
-              <li><a href="#how" className="hover:text-[var(--color-primary)]">How it works</a></li>
-              <li><a href="#features" className="hover:text-[var(--color-primary)]">Features</a></li>
-              <li><a href="#impact" className="hover:text-[var(--color-primary)]">Impact</a></li>
-              <li><Link to="/auth" className="hover:text-[var(--color-primary)]">Sign in</Link></li>
+              <li>
+                <a href="#how" className="hover:text-[var(--color-primary)]">
+                  How it works
+                </a>
+              </li>
+              <li>
+                <a href="#features" className="hover:text-[var(--color-primary)]">
+                  Features
+                </a>
+              </li>
+              <li>
+                <a href="#impact" className="hover:text-[var(--color-primary)]">
+                  Impact
+                </a>
+              </li>
+              <li>
+                <Link to="/auth" className="hover:text-[var(--color-primary)]">
+                  Sign in
+                </Link>
+              </li>
             </ul>
           </div>
           <div>

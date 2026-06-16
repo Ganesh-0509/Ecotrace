@@ -9,11 +9,7 @@ import Field from '../components/Field';
 import Button from '../components/Button';
 import { useAuthContext } from '../context/AuthContext';
 import { saveProfile } from '../features/tracking/services/trackingService';
-import {
-  TRANSPORT_MODES,
-  DIET_TYPES,
-  ENERGY_SOURCES,
-} from '../domain/models';
+import { TRANSPORT_MODES, DIET_TYPES, ENERGY_SOURCES } from '../domain/models';
 
 const TRANSPORT_OPTIONS = [
   { value: TRANSPORT_MODES.CAR, label: 'Car (petrol/diesel)' },

@@ -55,6 +55,31 @@ export default function DashboardPage() {
         </div>
       </div>
 
+      {/* Goal progress + real-world context */}
+      <Card className="flex flex-col gap-2">
+        <div className="flex items-center justify-between flex-wrap gap-2">
+          <h2 className="text-sm font-semibold text-[var(--color-text-secondary)]">
+            Monthly goal · {stats.totalSaved} / {stats.context.targetKg} kg CO₂ saved
+          </h2>
+          <span className="text-xs text-[var(--color-text-muted)]">
+            ≈ {stats.context.shareOfAveragePct}% of an average person’s monthly footprint
+          </span>
+        </div>
+        <div
+          className="h-2.5 w-full rounded-full bg-[var(--color-border)] overflow-hidden"
+          role="progressbar"
+          aria-valuenow={stats.context.progressPct}
+          aria-valuemin={0}
+          aria-valuemax={100}
+          aria-label={`Progress toward ${stats.context.targetKg} kg monthly saving goal`}
+        >
+          <div
+            className="h-full rounded-full bg-[var(--color-primary)] transition-[width] duration-500"
+            style={{ width: `${stats.context.progressPct}%` }}
+          />
+        </div>
+      </Card>
+
       {/* Logger + feed */}
       <div className="grid gap-6 lg:grid-cols-[1.4fr_1fr]">
         <section aria-labelledby="log-heading">

@@ -1,5 +1,19 @@
 // Labelled form control wrapping the design-system .input-field style.
 // Renders a <select> when `options` are supplied, otherwise an <input>.
+/**
+ * Renders a `<select>` when `options` are supplied, otherwise an `<input>`;
+ * any extra attributes are forwarded to whichever element is rendered.
+ * @param {{
+ *   id: string,
+ *   label?: string,
+ *   type?: string,
+ *   value?: string | number,
+ *   onChange?: (e: import('react').ChangeEvent<HTMLInputElement | HTMLSelectElement>) => void,
+ *   options?: Array<{ value: string, label: string }>,
+ *   required?: boolean,
+ *   [key: string]: unknown,
+ * }} props
+ */
 export default function Field({
   id,
   label,

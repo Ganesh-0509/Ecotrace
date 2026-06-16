@@ -1,12 +1,7 @@
 // Unit tests for the month-key helpers that underpin the monthly-aggregation
 // Firestore schema. A fixed date is injected so the tests stay deterministic.
 import { describe, it, expect } from 'vitest';
-import {
-  currentMonthKey,
-  todayKey,
-  formatMonthLabel,
-  isToday,
-} from './dateUtils';
+import { currentMonthKey, todayKey, formatMonthLabel, isToday } from './dateUtils';
 
 const FIXED = new Date('2026-06-15T09:30:00.000Z');
 

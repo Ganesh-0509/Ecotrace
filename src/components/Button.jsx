@@ -1,4 +1,10 @@
 // Global, reusable button. Variants map to the design-system CSS classes.
+/**
+ * @param {import('react').ButtonHTMLAttributes<HTMLButtonElement> & {
+ *   variant?: 'primary' | 'secondary',
+ *   loading?: boolean,
+ * }} props
+ */
 export default function Button({
   variant = 'primary',
   type = 'button',

@@ -14,6 +14,7 @@ import {
   ecoScore,
   savingsByCategory,
   toEquivalents,
+  footprintContext,
 } from '../../../utils/carbonCalculator';
 
 export function useFootprintData() {
@@ -84,6 +85,7 @@ export function useFootprintData() {
       score: ecoScore(totalSaved),
       byCategory: savingsByCategory(entries),
       equivalents: toEquivalents(totalSaved),
+      context: footprintContext(totalSaved),
       recent: [...entries].reverse().slice(0, 8),
     };
   }, [monthLog]);

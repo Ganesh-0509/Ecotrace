@@ -13,11 +13,7 @@
 //   • Google Search grounding is NOT enabled (it would incur charges).
 // ─────────────────────────────────────────────────────────────────────
 import { GoogleGenAI } from '@google/genai';
-import {
-  SYSTEM_INSTRUCTION,
-  RESPONSE_SCHEMA,
-  buildInsightPrompt,
-} from '../prompts/insightPrompt';
+import { SYSTEM_INSTRUCTION, RESPONSE_SCHEMA, buildInsightPrompt } from '../prompts/insightPrompt';
 import { ACTION_INDEX } from '../../../utils/emissionFactors';
 
 const MODEL = 'gemini-2.5-flash';
